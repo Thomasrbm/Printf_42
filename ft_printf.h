@@ -5,28 +5,59 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: throbert <throbert@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/31 05:50:45 by throbert          #+#    #+#             */
-/*   Updated: 2024/11/06 17:55:20 by throbert         ###   ########.fr       */
+/*   Created: 2025/11/12 15:31:02 by throbert          #+#    #+#             */
+/*   Updated: 2025/12/09 21:31:27 by throbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#ifndef FT_PRINTF_H
+# define FT_PRINTF_H
 
-#include <stdlib.h>
-#include <unistd.h>
-#include <stdarg.h>
+# include <stdarg.h>
+# include <unistd.h>
 
-#define BASE_LOW "0123456789abcdef"
+typedef struct s_flags
+{
+	int	minus;
+	int	zero;
+	int	dot;
+	int	hash;
+	int	space;
+	int	plus;
+	int	width;
+	int	precision;
+}		t_flags;
 
-int		ft_printf_char(int c);
-int		ft_printf_str(char *str);
-int		ft_args(va_list args, const char type);
-int		ft_printf(const char *str, ...);
+int		ft_printf(const char *format, ...);
 
-int		ft_printf_hexa(unsigned int num, char type);
-int		ft_printf_ptr(unsigned long ptr);
-int		ft_printf_nbr(int nbr);
-int		ft_printf_unbr(unsigned int nbr);
+int		ft_putchar(char c);
+int		ft_putstr(char *s);
 
-char	*ft_utoa(unsigned int n);
-void	ft_putstr(char *s);
+int		ft_parse_formatflags(const char *format, int *i, t_flags *flags,
+			va_list args);
+int		ft_print_with_flags(char c, va_list args, t_flags flags);
+int		ft_print_char_flags(char c, t_flags flags);
+int		ft_print_str_flags(char *s, t_flags flags);
+int		ft_print_ptr_flags(void *ptr, t_flags flags);
+int		ft_print_nbr_flags(int n, t_flags flags);
+int		ft_print_unsigned_flags(unsigned int n, t_flags flags);
+int		ft_print_hex_flags(unsigned int n, char f, t_flags flags);
+int		ft_print_percent_flags(t_flags flags);
+void	parse_precision(const char *format, int *i, t_flags *flags,
+			va_list args);
+void	parse_width(const char *format, int *i, t_flags *flags, va_list args);
+
+int		ft_isdigit(int c);
+int		ft_atoi(const char *str);
+int		ft_numlen(long n);
+int		ft_hexlen(unsigned long n);
+void	ft_putchar_n(char c, int n);
+void	ft_reset_formatflags_struct(t_flags *flags);
+int		parse_flags_chars(const char *format, int *i, t_flags *flags);
+
+void	print_hex_recursive(unsigned int n, char format);
+int		ft_parse_formatflags(const char *format, int *i, t_flags *flags,
+			va_list args);
+int		ft_ulen(unsigned int n);
+
+#endif
